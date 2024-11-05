@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class Movimiento : MonoBehaviour
 {
     private Rigidbody2D rb2D;
+    public bool isAlive = true;
+    public float deathCooldown = 1f;
 
     [Header("Movimiento")]
     private float inputX;
@@ -63,21 +66,24 @@ public class Movimiento : MonoBehaviour
 
     private void Mover(float mover, bool saltar)
     {
-        // Aplica la velocidad horizontal constante
-        rb2D.velocity = new Vector2(mover * velocidadDeMovimiento, rb2D.velocity.y);
+        if (isAlive)
+        {
+            // Aplica la velocidad horizontal constante
+            rb2D.velocity = new Vector2(mover * velocidadDeMovimiento, rb2D.velocity.y);
 
-        if ((mover > 0 && !mirandoDerecha) || (mover < 0 && mirandoDerecha))
-        {
-            Girar();
-        }
+            if ((mover > 0 && !mirandoDerecha) || (mover < 0 && mirandoDerecha))
+            {
+                Girar();
+            }
 
-        if (enSuelo && saltar)
-        {
-            Salto();
-        }
-        else if (!enSuelo && saltar && tiempoEnElAire < coyoteTime)
-        {
-            Salto();
+            if (enSuelo && saltar)
+            {
+                Salto();
+            }
+            else if (!enSuelo && saltar && tiempoEnElAire < coyoteTime)
+            {
+                Salto();
+            }
         }
     }
 
@@ -99,5 +105,22 @@ public class Movimiento : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(controladorSuelo.position, dimensionesCajaSuelo);
+    }
+
+    public void Muerte()
+    {
+        if (isAlive)
+        {
+            isAlive = false;
+
+            StartCoroutine(ReloadSceneAfterCooldown());
+        }
+    }
+
+    private IEnumerator ReloadSceneAfterCooldown()
+    {
+        GetComponent<Rigidbody2D>().simulated = false;
+        yield return new WaitForSeconds(deathCooldown);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
