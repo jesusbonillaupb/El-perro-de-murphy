@@ -37,7 +37,7 @@ public class Movimiento : MonoBehaviour
     {
         inputX = Input.GetAxisRaw("Horizontal");
 
-        animator.SetFloat("Horizontal", Mathf.Abs(inputX * velocidadDeMovimiento));
+        animator.SetFloat("Moving", Mathf.Abs(inputX * velocidadDeMovimiento));
 
         if (Input.GetButtonDown("Jump"))
         {
