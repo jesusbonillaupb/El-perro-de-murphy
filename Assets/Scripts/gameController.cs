@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class gameController : MonoBehaviour
 {
@@ -37,5 +38,14 @@ public class gameController : MonoBehaviour
 
     public void Exit(){
         Application.Quit();
+    }
+    public void Quit()
+    {
+
+        Time.timeScale = 1;
+        pausePlay.SetActive(true);
+        isPaused = false;
+        SceneManager.LoadScene("MainMenu");
+
     }
 }
