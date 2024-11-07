@@ -21,11 +21,13 @@ public class Movimiento : MonoBehaviour
     [SerializeField] private Vector3 dimensionesCajaSuelo;
     [SerializeField] private bool enSuelo;
     [SerializeField] private float coyoteTime = 0.2f;
+
     private float tiempoEnElAire;
     private bool salto = false;
 
     [Header("Animator")]
     private Animator animator;
+    [SerializeField] private ParticleSystem particulas;
 
     private void Start()
     {
@@ -36,7 +38,6 @@ public class Movimiento : MonoBehaviour
     private void Update()
     {
         inputX = Input.GetAxisRaw("Horizontal");
-
         animator.SetFloat("Moving", Mathf.Abs(inputX * velocidadDeMovimiento));
 
         if (Input.GetButtonDown("Jump"))
@@ -53,6 +54,7 @@ public class Movimiento : MonoBehaviour
         if (enSuelo)
         {
             tiempoEnElAire = 0;
+            particulas.Stop(); // Detiene las partículas cuando está en el suelo
         }
         else
         {
@@ -60,7 +62,6 @@ public class Movimiento : MonoBehaviour
         }
 
         Mover(inputX, salto);
-
         salto = false;
     }
 
@@ -68,7 +69,6 @@ public class Movimiento : MonoBehaviour
     {
         if (isAlive)
         {
-            // Aplica la velocidad horizontal constante
             rb2D.velocity = new Vector2(mover * velocidadDeMovimiento, rb2D.velocity.y);
 
             if ((mover > 0 && !mirandoDerecha) || (mover < 0 && mirandoDerecha))
@@ -91,6 +91,7 @@ public class Movimiento : MonoBehaviour
     {
         rb2D.velocity = new Vector2(rb2D.velocity.x, fuerzaDeSalto);
         tiempoEnElAire = 1f;
+        particulas.Play(); // Inicia las partículas cuando salta
     }
 
     private void Girar()
@@ -112,7 +113,6 @@ public class Movimiento : MonoBehaviour
         if (isAlive)
         {
             isAlive = false;
-
             StartCoroutine(ReloadSceneAfterCooldown());
         }
     }
