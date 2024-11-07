@@ -6,25 +6,25 @@ public class Sierra : MonoBehaviour
     private float moveDistance;     // Distancia a moverse hacia la izquierda
     private float speed;  // Velocidad de movimiento de la plataforma
     private bool muerte;
-    private bool isMoving = false;  // Controla si la plataforma está en movimiento
-    private Vector3 startPosition;  // Posición inicial de la plataforma
-    private Vector3 targetPosition; // Posición objetivo de la plataforma
+    private bool isMoving = false;  // Controla si la plataforma estï¿½ en movimiento
+    private Vector3 startPosition;  // Posiciï¿½n inicial de la plataforma
+    private Vector3 targetPosition; // Posiciï¿½n objetivo de la plataforma
 
     private void Start()
     {
-        // Guarda la posición inicial de la plataforma
+        // Guarda la posiciï¿½n inicial de la plataforma
         startPosition = transform.position;
     }
 
     private void Update()
     {
-        // Si `isMoving` es verdadero, mueve la plataforma hacia la posición objetivo
+        // Si `isMoving` es verdadero, mueve la plataforma hacia la posiciï¿½n objetivo
         if (isMoving)
         {
-            // Mueve la plataforma gradualmente hacia la posición objetivo
+            // Mueve la plataforma gradualmente hacia la posiciï¿½n objetivo
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 
-            // Si la plataforma llega a la posición objetivo, detiene el movimiento
+            // Si la plataforma llega a la posiciï¿½n objetivo, detiene el movimiento
             if (transform.position == targetPosition)
             {
                 isMoving = false;
@@ -33,14 +33,14 @@ public class Sierra : MonoBehaviour
         }
     }
 
-    // Método para iniciar el movimiento de la plataforma con parámetros
+    // Mï¿½todo para iniciar el movimiento de la plataforma con parï¿½metros
     public void StartMoving(float distancia, float velocidad, bool mata)
     {
         moveDistance = distancia; // Asigna la distancia
         speed = velocidad;        // Asigna la velocidad
         muerte = mata;
 
-        // Calcula la posición objetivo (hacia la izquierda)
+        // Calcula la posiciï¿½n objetivo (hacia la izquierda)
         targetPosition = startPosition - new Vector3(moveDistance, 0, 0);
 
         isMoving = true; // Inicia el movimiento
